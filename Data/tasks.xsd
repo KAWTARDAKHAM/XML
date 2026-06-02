@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://ensias.ma/tasks"
+           xmlns:tns="http://ensias.ma/tasks"
+           elementFormDefault="qualified">
+
+
+  <xs:element name="tasks">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="task" type="tns:TaskType"
+                    minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="TaskType">
+    <xs:sequence>
+      <xs:element name="titre"       type="xs:string"/>
+      <xs:element name="date_debut"  type="xs:date"/>
+      <xs:element name="date_fin"    type="xs:date"/>
+      <xs:element name="priorite"    type="tns:PrioriteType"/>
+      <xs:element name="statut"      type="tns:StatutType"/>
+      <xs:element name="sous_taches" type="tns:SousTachesType"
+                  minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="id"   type="xs:ID"        use="required"/>
+    <xs:attribute name="type" type="tns:TypeTache" use="required"/>
+  </xs:complexType>
+
+
+  <xs:complexType name="SousTachesType">
+    <xs:sequence>
+      <xs:element name="sous_tache" type="tns:SousTacheType"
+                  minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SousTacheType">
+    <xs:sequence>
+      <xs:element name="titre"  type="xs:string"/>
+      <xs:element name="statut" type="tns:StatutType"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="TypeTache">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="simple"/>
+      <xs:enumeration value="complexe"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="StatutType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="en cours"/>
+      <xs:enumeration value="terminé"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PrioriteType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="basse"/>
+      <xs:enumeration value="moyenne"/>
+      <xs:enumeration value="haute"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
