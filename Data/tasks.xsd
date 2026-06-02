@@ -41,6 +41,7 @@
       <xs:element name="titre"  type="xs:string"/>
       <xs:element name="date_debut" type="xs:date"/>
       <xs:element name="date_fin"   type="xs:date"/>
+       <xs:element name="priorite"   type="tns:PrioriteType"/>
       <xs:element name="statut" type="tns:StatutType"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:ID" use="required"/>
