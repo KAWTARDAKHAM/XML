@@ -45,11 +45,13 @@ export default function CalendarPage() {
   const years = Array.from({ length: 11 }, (_, i) => 2020 + i);
 
   const handleMonthChange = (val: string) => {
-    setMonthState(setMonth(month, parseInt(val)));
+    const newMonth = setMonth(month, parseInt(val));
+    setMonthState(newMonth);
   };
 
   const handleYearChange = (val: string) => {
-    setMonthState(setYear(month, parseInt(val)));
+    const newYear = setYear(month, parseInt(val));
+    setMonthState(newYear);
   };
 
   const modifiers = {
@@ -192,7 +194,7 @@ export default function CalendarPage() {
                       day_selected: "bg-pink-600/30 !text-white !opacity-100 shadow-[inset_0_0_15px_rgba(236,0,140,0.3)] after:content-[''] after:absolute after:inset-0 after:border-2 after:border-pink-500/50 after:rounded-none",
                       day_today: "text-white underline underline-offset-4 decoration-pink-500 font-black",
                       day_outside: "opacity-10 grayscale",
-                      day_hasTask: "before:content-[''] before:absolute before:top-3 before:right-3 before:w-1.5 before:h-1.5 before:bg-pink-500 before:rounded-full before:shadow-[0_0_8px_#ec008c]",
+                      day_hasTask: "!text-pink-500 font-black drop-shadow-[0_0_8px_rgba(236,0,140,0.8)] before:content-[''] before:absolute before:top-3 before:right-3 before:w-1.5 before:h-1.5 before:bg-pink-500 before:rounded-full before:shadow-[0_0_8px_#ec008c]",
                     }}
                   />
                 </div>
