@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Github, Mail, ArrowRight } from 'lucide-react';
+import { Github, Mail, ArrowRight, Info } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,6 +32,11 @@ export default function LoginPage() {
           </div>
           <h1 className="text-4xl font-headline font-bold text-white tracking-tight">Welcome Back</h1>
           <p className="text-muted-foreground">Log in to your FluentGantt workstation</p>
+          
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10 text-[10px] text-primary/70 uppercase tracking-widest mt-4">
+            <Info size={12} />
+            <span>Prototype mode: Use any credentials</span>
+          </div>
         </div>
 
         <div className="glass p-8 rounded-[2rem]">
@@ -39,7 +45,7 @@ export default function LoginPage() {
               <Label className="text-xs text-muted-foreground uppercase tracking-widest pl-1">Email</Label>
               <Input 
                 type="email" 
-                placeholder="name@example.com" 
+                placeholder="demo@example.com" 
                 required 
                 className="bg-white/5 border-white/10 text-white rounded-xl h-12 focus:ring-primary/50"
               />
@@ -51,6 +57,7 @@ export default function LoginPage() {
               </div>
               <Input 
                 type="password" 
+                placeholder="••••••••"
                 required 
                 className="bg-white/5 border-white/10 text-white rounded-xl h-12 focus:ring-primary/50"
               />
