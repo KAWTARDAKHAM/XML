@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from 'next/link';
@@ -29,7 +30,7 @@ export function DashboardNav() {
   return (
     <aside className="h-screen bg-[#0C0C0E] border-r border-white/5 w-20 flex flex-col items-center py-8 z-50 fixed left-0 top-0">
       <div className="mb-12">
-        <div className="w-12 h-12 rounded-[1.25rem] bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+        <div className="w-12 h-12 rounded-[1.25rem] bg-primary flex items-center justify-center text-white shadow-[0_0_20px_rgba(132,94,247,0.4)]">
            <Box size={24} />
         </div>
       </div>
@@ -46,7 +47,7 @@ export function DashboardNav() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "w-12 h-12 flex items-center justify-center rounded-[1.25rem] fluent-transition",
+                      "w-12 h-12 flex items-center justify-center rounded-[1.25rem] transition-all duration-300",
                       isActive 
                         ? "bg-white/10 text-primary shadow-inner" 
                         : "text-muted-foreground hover:bg-white/5 hover:text-white"
@@ -55,7 +56,7 @@ export function DashboardNav() {
                     <Icon size={22} />
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side="right" className="bg-popover text-popover-foreground border-white/10">
+                <TooltipContent side="right" className="bg-popover text-popover-foreground border-white/10 ml-2">
                   {item.label}
                 </TooltipContent>
               </Tooltip>
