@@ -13,7 +13,6 @@ import {
   Download, 
   CheckCircle2, 
   Terminal, 
-  Printer, 
   ChevronDown, 
   ChevronUp,
   FileText,
@@ -76,43 +75,6 @@ export default function XMLToolsPage() {
     });
   };
 
-  const handlePrint = () => {
-    if (!htmlPreview) return;
-    
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Project Report - FluentGantt</title>
-            <style>
-              @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-              body { margin: 0; padding: 20px; font-family: 'Inter', sans-serif; background: #000; }
-              #printable-report { max-width: 800px; margin: 0 auto; }
-              @media print {
-                body { background: white !important; }
-                #printable-report { color: black !important; }
-                #printable-report tr { background: #f8f9fa !important; border-bottom: 1px solid #eee !important; }
-                #printable-report h1 { color: #845EF7 !important; }
-                * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-              }
-            </style>
-          </head>
-          <body>
-            ${htmlPreview}
-            <script>
-              window.onload = () => {
-                window.print();
-                window.onafterprint = () => window.close();
-              }
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-    }
-  };
-
   const handleExport = () => {
     if (!htmlPreview) {
       toast({ variant: "destructive", title: "Missing Data", description: "Generate a report before exporting." });
@@ -120,9 +82,18 @@ export default function XMLToolsPage() {
     }
 
     if (exportFormat === 'pdf') {
-      // Pour un prototype, l'export PDF passe par le dialogue d'impression (Save as PDF)
-      toast({ title: "Redirecting to Print", description: "Select 'Save as PDF' in the print destination." });
-      handlePrint();
+      toast({ title: "PDF Generation", description: "Select 'Save as PDF' in the print dialog as a prototype fallback." });
+      // Prototype fallback to browser print for PDF
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head><title>Project Report</title></head>
+            <body style="background: #000;">${htmlPreview}<script>window.onload=()=>{window.print();window.close();}</script></body>
+          </html>
+        `);
+        printWindow.document.close();
+      }
     } else {
       const blob = new Blob([htmlPreview], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
@@ -188,22 +159,13 @@ export default function XMLToolsPage() {
                 </div>
                 
                 {htmlPreview && (
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="ghost" 
-                      onClick={handleExport}
-                      className="text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-white/10 rounded-xl h-10 px-6"
-                    >
-                      <Download size={14} className="mr-2" /> Download {exportFormat}
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      onClick={handlePrint}
-                      className="text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-white/10 rounded-xl h-10 px-6"
-                    >
-                      <Printer size={14} className="mr-2" /> Print
-                    </Button>
-                  </div>
+                  <Button 
+                    variant="ghost" 
+                    onClick={handleExport}
+                    className="text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-white/10 rounded-xl h-10 px-6"
+                  >
+                    <Download size={14} className="mr-2" /> Download {exportFormat}
+                  </Button>
                 )}
               </div>
               
@@ -282,4 +244,3 @@ export default function XMLToolsPage() {
     </div>
   );
 }
-
