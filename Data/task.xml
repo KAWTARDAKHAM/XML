@@ -73,6 +73,4 @@
     </ns0:sous_taches>
   </ns0:task>
 
-
-<ns2:task id="t5" type="simple"><ns2:titre>new task</ns2:titre><ns2:date_debut>2026-06-04</ns2:date_debut><ns2:date_fin>2026-06-10</ns2:date_fin><ns2:priorite>basse</ns2:priorite><ns2:statut>en cours</ns2:statut></ns2:task>
 </ns0:tasks>

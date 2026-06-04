@@ -54,3 +54,37 @@ def import_xml_to_sqlite():
     conn.close()
 
     print("XML imported into SQLite successfully.")
+
+#add a task to the database
+def add_task_db(task):
+    conn=sqlite3.connect(DB_FILE)
+    cursor=conn.cursor()
+    
+    try:
+        cursor.execute("""
+        INSERT INTO tasks VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, task)
+
+        conn.commit()
+        print("Task added successfully")
+
+    except Exception as e:
+        conn.rollback()
+        print("Error adding task:", e)
+
+    finally:
+        conn.close()
+
+#displaying tasks from the database
+
+def show_all_tasks():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM tasks")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        print(row)
+
+    conn.close()

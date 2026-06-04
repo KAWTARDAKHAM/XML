@@ -59,7 +59,7 @@ def afficher_taches():
 
 #Add a task to XML file : 
 
-def ajouter_tache(xml_file, id, titre_txt, debut, fin, priorite_txt):
+def ajouter_tache_xml(xml_file, id, titre_txt, debut, fin, priorite_txt):
 
     XML_FILE="../Data/"+xml_file
 
