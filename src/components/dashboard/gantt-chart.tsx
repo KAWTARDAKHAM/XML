@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Task } from '@/lib/types';
@@ -54,7 +55,7 @@ export function GanttChart({ tasks, onEditTask, onDeleteTask }: GanttChartProps)
     <div className="glass rounded-[2rem] overflow-hidden h-full flex flex-col border-white/5 shadow-2xl">
       <div className="p-6 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
         <div>
-          <h2 className="text-xl font-headline font-semibold text-white">Project Roadmap</h2>
+          <h2 className="text-xl font-headline font-semibold text-foreground">Project Roadmap</h2>
           <p className="text-sm text-muted-foreground">Timeline visualization for deliverables</p>
         </div>
         <div className="flex gap-2">
@@ -65,7 +66,7 @@ export function GanttChart({ tasks, onEditTask, onDeleteTask }: GanttChartProps)
       <ScrollArea className="flex-1 w-full">
         <div className="min-w-[1400px]">
           {/* Header row */}
-          <div className="gantt-grid sticky top-0 z-20 bg-[#0C0C0E] border-b border-white/10">
+          <div className="gantt-grid sticky top-0 z-20 bg-background/80 backdrop-blur-md border-b border-white/10">
             <div className="p-4 font-headline text-xs text-muted-foreground uppercase tracking-widest border-r border-white/5">Task Node</div>
             {days.map((day, i) => (
               <div 
@@ -76,7 +77,7 @@ export function GanttChart({ tasks, onEditTask, onDeleteTask }: GanttChartProps)
                 )}
               >
                 <span className="text-muted-foreground opacity-60 uppercase">{format(day, 'EEE')}</span>
-                <span className="text-white text-lg font-bold">{format(day, 'd')}</span>
+                <span className="text-foreground text-lg font-bold">{format(day, 'd')}</span>
               </div>
             ))}
           </div>
@@ -87,7 +88,7 @@ export function GanttChart({ tasks, onEditTask, onDeleteTask }: GanttChartProps)
               <div key={task.id} className="gantt-grid group border-b border-white/5 items-center hover:bg-white/[0.02] fluent-transition">
                 <div className="p-5 border-r border-white/5 overflow-hidden flex items-center justify-between">
                   <div className="truncate flex-1">
-                    <h4 className="text-sm font-semibold text-white truncate group-hover:text-primary transition-colors">{task.name}</h4>
+                    <h4 className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">{task.name}</h4>
                     <div className="flex items-center gap-2 mt-1.5">
                       <span className={cn(
                         "w-2 h-2 rounded-full", 
@@ -140,7 +141,7 @@ export function GanttChart({ tasks, onEditTask, onDeleteTask }: GanttChartProps)
 
             {/* Vertical grid lines background */}
             <div className="absolute inset-0 pointer-events-none grid gantt-grid" style={{ zIndex: -1 }}>
-              <div className="col-start-1 h-full border-r border-white/5 bg-[#0C0C0E]/50" />
+              <div className="col-start-1 h-full border-r border-white/5 bg-black/5" />
               {days.map((_, i) => (
                 <div key={i} className="h-full border-r border-white/[0.02]" />
               ))}
