@@ -69,9 +69,9 @@ export default function CalendarPage() {
       <DashboardNav />
       
       <main className="pl-20 flex-1 flex items-center justify-center p-4 overflow-hidden">
-        <div className="w-full max-w-6xl h-[80vh] max-h-[700px] flex rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/5 bg-black/40 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-700">
+        <div className="w-full max-w-6xl h-[85vh] max-h-[800px] flex rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/5 bg-black/40 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-700">
           
-          {/* PANNEAU GAUCHE - SCHEDULE */}
+          {/* PANNEAU GAUCHE - LISTE DES TÂCHES */}
           <div className="w-[35%] bg-[#1A1F4D]/40 p-8 flex flex-col border-r border-white/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-600/10 to-transparent pointer-events-none" />
             
@@ -129,13 +129,13 @@ export default function CalendarPage() {
             </ScrollArea>
           </div>
 
-          {/* PANNEAU DROIT - CALENDAR */}
+          {/* PANNEAU DROIT - CALENDRIER AVEC SCROLL */}
           <div className="flex-1 bg-[#2D1326]/40 p-8 flex flex-col relative overflow-hidden">
             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-pink-600/10 to-transparent pointer-events-none" />
 
             <div className="relative z-10 flex flex-col h-full">
-              {/* Header with Custom Selectors */}
-              <div className="flex items-center justify-between mb-8">
+              {/* Header Fixe */}
+              <div className="flex items-center justify-between mb-8 shrink-0">
                 <div className="flex items-center gap-2">
                   <Select value={month.getMonth().toString()} onValueChange={handleMonthChange}>
                     <SelectTrigger className="w-[140px] bg-white/5 border-white/10 text-white rounded-xl h-9 text-xs font-bold uppercase tracking-widest">
@@ -165,39 +165,41 @@ export default function CalendarPage() {
                 </div>
               </div>
 
-              {/* Grid Calendar */}
-              <div className="flex-1 bg-black/30 rounded-[2rem] border border-white/10 p-4 overflow-hidden">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  month={month}
-                  onMonthChange={setMonthState}
-                  modifiers={modifiers}
-                  showOutsideDays={true}
-                  className="w-full h-full p-0"
-                  classNames={{
-                    months: "flex flex-col h-full",
-                    month: "space-y-4 h-full flex flex-col",
-                    caption: "hidden",
-                    table: "w-full border-collapse h-full flex flex-col",
-                    head_row: "flex w-full mb-4",
-                    head_cell: "flex-1 text-pink-400 font-bold text-[10px] uppercase tracking-[0.2em] text-center",
-                    row: "flex w-full flex-1 border-t border-white/5",
-                    cell: "flex-1 text-center text-sm p-0 relative border-l border-white/5 first:border-l-0 focus-within:z-20 flex items-stretch",
-                    day: cn(
-                      "w-full h-full font-bold transition-all flex flex-col items-center justify-center text-base text-white/30 hover:bg-white/5 hover:text-white",
-                    ),
-                    day_selected: "bg-pink-600/30 !text-white !opacity-100 shadow-[inset_0_0_15px_rgba(236,0,140,0.3)] after:content-[''] after:absolute after:inset-0 after:border-2 after:border-pink-500/50 after:rounded-none",
-                    day_today: "text-white underline underline-offset-4 decoration-pink-500 font-black",
-                    day_outside: "opacity-10 grayscale",
-                    day_hasTask: "before:content-[''] before:absolute before:top-3 before:right-3 before:w-1.5 before:h-1.5 before:bg-pink-500 before:rounded-full before:shadow-[0_0_8px_#ec008c]",
-                  }}
-                />
-              </div>
+              {/* Zone de Calendrier Défilable */}
+              <ScrollArea className="flex-1 bg-black/30 rounded-[2rem] border border-white/10 overflow-hidden">
+                <div className="p-4 min-h-full">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    month={month}
+                    onMonthChange={setMonthState}
+                    modifiers={modifiers}
+                    showOutsideDays={true}
+                    className="w-full p-0"
+                    classNames={{
+                      months: "flex flex-col",
+                      month: "space-y-4",
+                      caption: "hidden",
+                      table: "w-full border-collapse",
+                      head_row: "flex w-full mb-4",
+                      head_cell: "flex-1 text-pink-400 font-bold text-[10px] uppercase tracking-[0.2em] text-center",
+                      row: "flex w-full border-t border-white/5",
+                      cell: "flex-1 text-center text-sm p-0 relative border-l border-white/5 first:border-l-0 focus-within:z-20 min-h-[80px] flex items-stretch",
+                      day: cn(
+                        "w-full h-full font-bold transition-all flex flex-col items-center justify-center text-base text-white/30 hover:bg-white/5 hover:text-white py-4",
+                      ),
+                      day_selected: "bg-pink-600/30 !text-white !opacity-100 shadow-[inset_0_0_15px_rgba(236,0,140,0.3)] after:content-[''] after:absolute after:inset-0 after:border-2 after:border-pink-500/50 after:rounded-none",
+                      day_today: "text-white underline underline-offset-4 decoration-pink-500 font-black",
+                      day_outside: "opacity-10 grayscale",
+                      day_hasTask: "before:content-[''] before:absolute before:top-3 before:right-3 before:w-1.5 before:h-1.5 before:bg-pink-500 before:rounded-full before:shadow-[0_0_8px_#ec008c]",
+                    }}
+                  />
+                </div>
+              </ScrollArea>
 
-              {/* Status Footer */}
-              <div className="mt-6 flex items-center justify-between text-[9px] font-bold tracking-[0.2em] text-white/20 uppercase">
+              {/* Status Footer Fixe */}
+              <div className="mt-6 flex items-center justify-between text-[9px] font-bold tracking-[0.2em] text-white/20 uppercase shrink-0">
                 <div className="flex gap-4">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
