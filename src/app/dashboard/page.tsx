@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from 'react';
@@ -12,9 +13,11 @@ import { Search, Bell, Plus, TrendingUp, CheckCircle2, Clock, AlertTriangle } fr
 import { cn } from '@/lib/utils';
 import { Task } from '@/lib/types';
 import { toast } from '@/hooks/use-toast';
+import { useSettings } from '@/hooks/use-settings-context';
 
 export default function DashboardPage() {
   const { tasks, updateTask, addTask, deleteTask } = useTasks();
+  const { t } = useSettings();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
@@ -55,7 +58,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-[#09090B] text-white">
+    <div className="flex min-h-screen bg-background text-foreground">
       <DashboardNav />
       
       <main className="flex-1 pl-20 p-8 overflow-y-auto">
@@ -63,7 +66,7 @@ export default function DashboardPage() {
           
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h1 className="text-4xl font-headline font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/40">
+              <h1 className="text-4xl font-headline font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/40">
                 Workspace Overview
               </h1>
               <p className="text-muted-foreground mt-1">
