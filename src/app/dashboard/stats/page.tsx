@@ -5,56 +5,55 @@ import { DashboardNav } from '@/components/dashboard/dashboard-nav';
 import { useTasks } from '@/hooks/use-tasks';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
-  BarChart, 
-  Bar, 
+  AreaChart, 
+  Area, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer, 
-  LineChart, 
-  Line, 
-  AreaChart, 
-  Area 
+  ResponsiveContainer,
+  RadialBarChart,
+  RadialBar,
+  PolarAngleAxis
 } from 'recharts';
 import { Progress } from '@/components/ui/progress';
-import { Activity, Target, Zap, Clock, TrendingUp } from 'lucide-react';
+import { Activity, Target, Clock, TrendingUp } from 'lucide-react';
 import { format, subDays, eachDayOfInterval } from 'date-fns';
 
 export default function StatsHubPage() {
   const { tasks } = useTasks();
 
-  // 1. Effort Distribution Data (Matching the provided image)
-  const effortData = tasks.map(t => ({
-    name: t.name.length > 12 ? t.name.substring(0, 10) + '...' : t.name,
-    effort: t.estimatedEffortHours,
-  })).sort((a, b) => b.effort - a.effort);
-
-  // 2. Weekly Progress Tracking (Simulation for the last 7 days)
+  // 1. Weekly Progress Tracking (Simulation for the last 7 days)
   const last7Days = eachDayOfInterval({
     start: subDays(new Date(), 6),
     end: new Date()
   });
 
   const progressHistory = last7Days.map((day, index) => {
-    // Simulated historical data based on current tasks
     const total = tasks.length;
     const completedCount = tasks.filter(t => t.status === 'completed').length;
-    // We mock a progression: earlier days had fewer tasks completed
+    // Simulation d'une progression historique
     const dayCompleted = Math.max(0, completedCount - (6 - index));
-    const percentage = total > 0 ? Math.round((dayCompleted / total) * 100) : 0;
     
     return {
       date: format(day, 'EEE'),
       total: total,
       completed: dayCompleted,
-      percentage: percentage
     };
   });
 
   const totalEffort = tasks.reduce((acc, t) => acc + (t.estimatedEffortHours || 0), 0);
   const completedTasks = tasks.filter(t => t.status === 'completed').length;
   const overallProgress = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0;
+
+  // Données pour le diagramme circulaire
+  const radialData = [
+    {
+      name: 'Completion',
+      value: overallProgress,
+      fill: 'hsl(var(--primary))',
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-[#09090B] text-white">
@@ -72,8 +71,8 @@ export default function StatsHubPage() {
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Overall Integrity</p>
                 <p className="text-2xl font-bold text-primary">{overallProgress}%</p>
               </div>
-              <div className="w-16 h-16 rounded-full border-2 border-primary/20 flex items-center justify-center p-1">
-                <div className="w-full h-full rounded-full border-4 border-primary border-t-transparent animate-spin-slow" />
+              <div className="w-12 h-12 rounded-full border-2 border-primary/20 flex items-center justify-center">
+                <Activity size={20} className="text-primary animate-pulse" />
               </div>
             </div>
           </header>
@@ -85,7 +84,6 @@ export default function StatsHubPage() {
                 <div className="p-3 rounded-2xl bg-primary/10 text-primary">
                   <Target size={20} />
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold px-2 py-1 bg-emerald-500/10 rounded-full">+12% Gain</span>
               </div>
               <p className="text-sm text-muted-foreground">Completion Rate</p>
               <h3 className="text-3xl font-bold mt-1">{overallProgress}%</h3>
@@ -98,9 +96,9 @@ export default function StatsHubPage() {
                   <Clock size={20} />
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Total Invested Effort</p>
+              <p className="text-sm text-muted-foreground">Invested Effort</p>
               <h3 className="text-3xl font-bold mt-1">{totalEffort}h</h3>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2">Active Architecture</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2">Total Project Scope</p>
             </div>
 
             <div className="glass p-6 rounded-[2rem] glass-hover border-purple-500/10">
@@ -109,31 +107,70 @@ export default function StatsHubPage() {
                   <TrendingUp size={20} />
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Velocity Index</p>
-              <h3 className="text-3xl font-bold mt-1">4.2</h3>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2">Tasks per cycle</p>
+              <p className="text-sm text-muted-foreground">Active Units</p>
+              <h3 className="text-3xl font-bold mt-1">{tasks.length}</h3>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2">Synchronized Nodes</p>
             </div>
 
-            <div className="glass p-6 rounded-[2rem] glass-hover border-rose-500/10">
+            <div className="glass p-6 rounded-[2rem] glass-hover border-emerald-500/10">
               <div className="flex justify-between items-start mb-4">
-                <div className="p-3 rounded-2xl bg-rose-500/10 text-rose-400">
+                <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400">
                   <Activity size={20} />
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Active Nodes</p>
-              <h3 className="text-3xl font-bold mt-1">{tasks.length}</h3>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2">Synchronized</p>
+              <p className="text-sm text-muted-foreground">Status</p>
+              <h3 className="text-3xl font-bold mt-1 uppercase text-emerald-400">Stable</h3>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2">Neural Link Active</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Weekly Progress Tracker (New Chart) */}
+            {/* Diagramme Circulaire - Overall Goal */}
+            <Card className="glass border-white/5 rounded-[2.5rem] overflow-hidden">
+              <CardHeader className="p-8">
+                <CardTitle className="text-white font-headline text-2xl">Global Progress</CardTitle>
+                <CardDescription>Current completion status against architecture goals</CardDescription>
+              </CardHeader>
+              <CardContent className="h-[400px] flex flex-col items-center justify-center relative">
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+                   <span className="text-5xl font-bold text-white">{overallProgress}%</span>
+                   <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-2">Complete</span>
+                </div>
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadialBarChart 
+                    cx="50%" 
+                    cy="50%" 
+                    innerRadius="70%" 
+                    outerRadius="100%" 
+                    barSize={20} 
+                    data={radialData}
+                    startAngle={90}
+                    endAngle={450}
+                  >
+                    <PolarAngleAxis
+                      type="number"
+                      domain={[0, 100]}
+                      angleAxisId={0}
+                      tick={false}
+                    />
+                    <RadialBar
+                      background
+                      dataKey="value"
+                      cornerRadius={15}
+                      fill="hsl(var(--primary))"
+                    />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Weekly Progress Tracker (Area Chart) */}
             <Card className="glass border-white/5 rounded-[2.5rem] overflow-hidden">
               <CardHeader className="p-8">
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle className="text-white font-headline text-2xl">Weekly Progress Tracker</CardTitle>
-                    <CardDescription>Daily task completion & success percentage</CardDescription>
+                    <CardTitle className="text-white font-headline text-2xl">Weekly Activity</CardTitle>
+                    <CardDescription>Task nodes activity for the current cycle</CardDescription>
                   </div>
                   <div className="flex gap-4 text-[10px] uppercase tracking-tighter">
                     <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-primary" /> Total</div>
@@ -149,7 +186,7 @@ export default function StatsHubPage() {
                         <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
                         <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
                       </linearGradient>
-                      <linearGradient id="colorPercentage" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="colorCompleted" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3}/>
                         <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0}/>
                       </linearGradient>
@@ -186,88 +223,36 @@ export default function StatsHubPage() {
                       stroke="hsl(var(--accent))" 
                       strokeWidth={3}
                       fillOpacity={1} 
-                      fill="url(#colorPercentage)" 
+                      fill="url(#colorCompleted)" 
                     />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
-
-            {/* Effort Distribution Chart (Matching image) */}
-            <Card className="glass border-white/5 rounded-[2.5rem] overflow-hidden">
-              <CardHeader className="p-8">
-                <CardTitle className="text-white font-headline text-2xl">Effort Distribution</CardTitle>
-                <CardDescription>Hour estimates by deliverable (Sorted by magnitude)</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[400px] pr-8">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={effortData} margin={{ bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
-                    <XAxis 
-                      dataKey="name" 
-                      stroke="#4b5563" 
-                      fontSize={10} 
-                      tickLine={false} 
-                      axisLine={false}
-                      angle={-20}
-                      textAnchor="end"
-                    />
-                    <YAxis 
-                      stroke="#4b5563" 
-                      fontSize={10} 
-                      tickLine={false} 
-                      axisLine={false}
-                      tickFormatter={(value) => `${value}h`}
-                    />
-                    <Tooltip 
-                      cursor={{ fill: 'rgba(132, 94, 247, 0.05)' }}
-                      contentStyle={{ backgroundColor: '#111', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px' }}
-                      itemStyle={{ color: '#845EF7' }}
-                    />
-                    <Bar 
-                      dataKey="effort" 
-                      fill="#845EF7" 
-                      radius={[12, 12, 4, 4]} 
-                      barSize={40}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
           </div>
 
-          {/* Productivity Legend */}
+          {/* Legend / Status Bar */}
           <div className="glass p-8 rounded-[2.5rem] flex flex-col md:flex-row gap-8 items-center border-primary/5">
             <div className="flex-1 space-y-2">
-              <h4 className="text-xl font-headline font-bold">Optimization Summary</h4>
+              <h4 className="text-xl font-headline font-bold">System Insights</h4>
               <p className="text-sm text-muted-foreground">
-                Your current architectural velocity is optimal. The completion rate of <b>{overallProgress}%</b> indicates a healthy delivery pipeline. 
-                AI suggestions have reduced the critical path bottleneck by <b>14.2%</b>.
+                The completion rate of <b>{overallProgress}%</b> is currently within the optimal range. Weekly velocity is consistent with project scope. 
+                AI recommendation: Focus on high-priority nodes to maintain the 14% improvement index.
               </p>
             </div>
             <div className="flex gap-4">
-              <div className="p-4 rounded-[1.5rem] bg-emerald-500/10 flex flex-col items-center">
-                <span className="text-[10px] uppercase text-emerald-400/60 font-bold mb-1">Status</span>
-                <span className="text-emerald-400 font-bold">STABLE</span>
+              <div className="px-6 py-4 rounded-[1.5rem] bg-primary/10 border border-primary/10 flex flex-col items-center">
+                <span className="text-[10px] uppercase text-primary/60 font-bold mb-1">Architecture</span>
+                <span className="text-primary font-bold">SECURE</span>
               </div>
-              <div className="p-4 rounded-[1.5rem] bg-primary/10 flex flex-col items-center">
-                <span className="text-[10px] uppercase text-primary/60 font-bold mb-1">Sync</span>
-                <span className="text-primary font-bold">ACTIVE</span>
+              <div className="px-6 py-4 rounded-[1.5rem] bg-accent/10 border border-accent/10 flex flex-col items-center">
+                <span className="text-[10px] uppercase text-accent/60 font-bold mb-1">Pipeline</span>
+                <span className="text-accent font-bold">SYNCED</span>
               </div>
             </div>
           </div>
         </div>
       </main>
-
-      <style jsx global>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 8s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }
