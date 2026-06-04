@@ -38,7 +38,7 @@
     --primary-foreground: 210 40% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
+    --muted: 240 3.8% 46.1%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 199 89% 48%;
     --accent-foreground: 240 5.9% 10%;
@@ -60,6 +60,11 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline font-bold tracking-tight;
   }
+}
+
+.gantt-grid {
+  display: grid;
+  grid-template-columns: 320px repeat(31, 60px);
 }
 
 .glass {
