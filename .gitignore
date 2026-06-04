@@ -3,3 +3,7 @@ env/
 *.pyc
 .DS_Store
 *.log
+
+# Generated database and output XML
+Data/tasks.db
+Data/tasks.xml

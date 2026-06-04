@@ -1,8 +1,9 @@
 import xml.etree.ElementTree as ET
 
 XML_FILE = "../Data/task.xml"
+NS_URI = "http://ensias.ma/tasks"
 NS = {
-    "t": "http://ensias.ma/tasks"
+    "t": NS_URI
 }
 
 def afficher_taches():
@@ -67,24 +68,24 @@ def ajouter_tache_xml(xml_file, id, titre_txt, debut, fin, priorite_txt):
     root = tree.getroot()
 
     #we whether use task as SubElement of tasks(root) here or use root.append() at the end
-    #task = ET.SubElement(root,f"{{{NS}}}task")
-    task=ET.Element(f"{{{NS}}}task")
+    #task = ET.SubElement(root,f"{{{NS_URI}}}task")
+    task = ET.Element(f"{{{NS_URI}}}task")
     task.set("id", id)
     task.set("type", "simple")
 
-    titre = ET.SubElement(task, f"{{{NS}}}titre")
+    titre = ET.SubElement(task, f"{{{NS_URI}}}titre")
     titre.text = titre_txt
 
-    date_debut = ET.SubElement(task, f"{{{NS}}}date_debut")
+    date_debut = ET.SubElement(task, f"{{{NS_URI}}}date_debut")
     date_debut.text = debut
 
-    date_fin = ET.SubElement(task, f"{{{NS}}}date_fin")
+    date_fin = ET.SubElement(task, f"{{{NS_URI}}}date_fin")
     date_fin.text = fin
 
-    priorite = ET.SubElement(task, f"{{{NS}}}priorite")
+    priorite = ET.SubElement(task, f"{{{NS_URI}}}priorite")
     priorite.text = priorite_txt
 
-    statut = ET.SubElement(task, f"{{{NS}}}statut")
+    statut = ET.SubElement(task, f"{{{NS_URI}}}statut")
     statut.text = "en cours"
 
     root.append(task) 
