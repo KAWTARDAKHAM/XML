@@ -61,7 +61,7 @@ export default function CalendarPage() {
       <main className="pl-20 flex-1 flex items-center justify-center p-4 lg:p-6 overflow-hidden">
         <div className="w-full max-w-6xl h-[85vh] max-h-[750px] flex rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/5 bg-black/40 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-700">
           
-          {/* LEFT PANE - TASK LIST (BLUE THEME) */}
+          {/* LEFT PANE - TASK LIST */}
           <div className="w-full lg:w-[35%] bg-[#1A1F4D]/60 p-6 lg:p-8 flex flex-col border-r border-white/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-600/10 to-transparent pointer-events-none" />
             
@@ -119,12 +119,12 @@ export default function CalendarPage() {
             </ScrollArea>
           </div>
 
-          {/* RIGHT PANE - CALENDAR GRID (MAGENTA THEME) */}
+          {/* RIGHT PANE - CALENDAR (MAGENTA THEME) */}
           <div className="hidden lg:flex flex-1 bg-[#2D1326]/60 p-8 flex-col relative overflow-hidden">
             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-pink-600/10 to-transparent pointer-events-none" />
 
             <div className="relative z-10 flex flex-col h-full">
-              {/* Improved Month Selector */}
+              {/* Header with Month Selector and Stats */}
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center p-1 bg-white/5 border border-white/10 rounded-2xl">
                   <Button 
@@ -152,6 +152,7 @@ export default function CalendarPage() {
                 </div>
               </div>
 
+              {/* Main Calendar Grid */}
               <div className="flex-1 bg-black/30 rounded-[1.5rem] border border-white/10 p-2 overflow-hidden flex flex-col">
                 <Calendar
                   mode="single"
@@ -182,6 +183,7 @@ export default function CalendarPage() {
                 />
               </div>
 
+              {/* Footer Status Indicators */}
               <div className="mt-6 flex items-center justify-between text-[9px] font-bold tracking-[0.2em] text-white/20 uppercase">
                 <div className="flex gap-4">
                   <div className="flex items-center gap-2">
