@@ -5,7 +5,8 @@ import { useTasks } from '@/hooks/use-tasks';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Layers, Box, Terminal, Globe, Shield } from 'lucide-react';
+import { Layers, Box, Terminal, Shield } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function ProjectsPage() {
   const { tasks } = useTasks();
@@ -47,7 +48,7 @@ export default function ProjectsPage() {
       <main className="pl-20 p-8">
         <div className="max-w-7xl mx-auto space-y-8">
           <header>
-            <h1 className="text-4xl font-headline font-bold text-white">Project Matrix</h1>
+            <h1 className="text-4xl font-headline font-bold text-white tracking-tight">Project Matrix</h1>
             <p className="text-muted-foreground mt-2">Global health monitoring of architectural nodes</p>
           </header>
 

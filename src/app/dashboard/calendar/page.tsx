@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { format, parseISO, isSameDay } from 'date-fns';
 import { useState } from 'react';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function CalendarPage() {
   const { tasks } = useTasks();
@@ -23,12 +25,12 @@ export default function CalendarPage() {
       <main className="pl-20 p-8">
         <div className="max-w-7xl mx-auto space-y-8">
           <header>
-            <h1 className="text-4xl font-headline font-bold text-white">Timeline Scheduler</h1>
+            <h1 className="text-4xl font-headline font-bold text-white tracking-tight">Timeline Scheduler</h1>
             <p className="text-muted-foreground mt-2">Manage deadlines and milestones across the temporal plane</p>
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <Card className="glass border-white/5 lg:col-span-2 rounded-[2rem] p-6 overflow-hidden">
+            <Card className="glass border-white/5 lg:col-span-2 rounded-[2.5rem] p-6 overflow-hidden">
               <Calendar
                 mode="single"
                 selected={selectedDate}
