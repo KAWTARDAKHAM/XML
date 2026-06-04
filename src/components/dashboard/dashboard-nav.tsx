@@ -10,7 +10,6 @@ import {
   Settings, 
   LogOut,
   Calendar as CalendarIcon,
-  Layers,
   Box
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,6 @@ const NAV_ITEMS = [
   { label: 'Analytics', href: '/dashboard/stats', icon: BarChart3 },
   { label: 'Calendar', href: '/dashboard/calendar', icon: CalendarIcon },
   { label: 'XML Tools', href: '/dashboard/xml-tools', icon: FileCode2 },
-  { label: 'Projects', href: '/dashboard/projects', icon: Layers },
   { label: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 
