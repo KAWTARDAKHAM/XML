@@ -5,12 +5,22 @@ import { cn } from '@/lib/utils';
 import { differenceInDays, format, startOfMonth, addDays, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { MoreVertical, Edit2, Trash2, CheckCircle2 } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 interface GanttChartProps {
   tasks: Task[];
+  onEditTask?: (task: Task) => void;
+  onDeleteTask?: (id: string) => void;
 }
 
-export function GanttChart({ tasks }: GanttChartProps) {
+export function GanttChart({ tasks, onEditTask, onDeleteTask }: GanttChartProps) {
   // Use May 2024 as the demo window
   const startDate = startOfMonth(new Date(2024, 4, 1));
   const days = Array.from({ length: 31 }, (_, i) => addDays(startDate, i));
@@ -19,7 +29,6 @@ export function GanttChart({ tasks }: GanttChartProps) {
     const start = parseISO(task.startDate);
     const end = parseISO(task.endDate);
     
-    // Safety check for dates
     const safeStart = isNaN(start.getTime()) ? startDate : start;
     const safeEnd = isNaN(end.getTime()) ? addDays(startDate, 1) : end;
 
@@ -27,7 +36,7 @@ export function GanttChart({ tasks }: GanttChartProps) {
     const duration = Math.max(1, differenceInDays(safeEnd, safeStart) + 1);
 
     return {
-      gridColumnStart: startOffset + 2, // +2 because index 1 is the Task Name column
+      gridColumnStart: startOffset + 2, 
       gridColumnEnd: startOffset + 2 + duration,
     };
   };
@@ -49,7 +58,7 @@ export function GanttChart({ tasks }: GanttChartProps) {
           <p className="text-sm text-muted-foreground">Timeline visualization for deliverables</p>
         </div>
         <div className="flex gap-2">
-          <Badge variant="outline" className="border-white/10 text-xs px-4 py-1 rounded-full bg-white/5">May 2024</Badge>
+          <Badge variant="outline" className="border-white/10 text-xs px-4 py-1 rounded-full bg-white/5 text-primary">May 2024</Badge>
         </div>
       </div>
 
@@ -57,7 +66,7 @@ export function GanttChart({ tasks }: GanttChartProps) {
         <div className="min-w-[1400px]">
           {/* Header row */}
           <div className="gantt-grid sticky top-0 z-20 bg-[#0C0C0E] border-b border-white/10">
-            <div className="p-4 font-headline text-xs text-muted-foreground uppercase tracking-widest border-r border-white/5">Task Identifier</div>
+            <div className="p-4 font-headline text-xs text-muted-foreground uppercase tracking-widest border-r border-white/5">Task Node</div>
             {days.map((day, i) => (
               <div 
                 key={i} 
@@ -76,15 +85,33 @@ export function GanttChart({ tasks }: GanttChartProps) {
           <div className="relative">
             {tasks.map((task) => (
               <div key={task.id} className="gantt-grid group border-b border-white/5 items-center hover:bg-white/[0.02] fluent-transition">
-                <div className="p-5 border-r border-white/5 overflow-hidden">
-                  <h4 className="text-sm font-semibold text-white truncate group-hover:text-primary transition-colors">{task.name}</h4>
-                  <div className="flex items-center gap-2 mt-1.5">
-                    <span className={cn(
-                      "w-2 h-2 rounded-full", 
-                      task.priority === 'Critical' ? "bg-rose-500" : task.priority === 'High' ? "bg-orange-500" : "bg-blue-500"
-                    )} />
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-tighter">{task.priority} • {task.estimatedEffortHours}h</span>
+                <div className="p-5 border-r border-white/5 overflow-hidden flex items-center justify-between">
+                  <div className="truncate flex-1">
+                    <h4 className="text-sm font-semibold text-white truncate group-hover:text-primary transition-colors">{task.name}</h4>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className={cn(
+                        "w-2 h-2 rounded-full", 
+                        task.priority === 'Critical' ? "bg-rose-500" : task.priority === 'High' ? "bg-orange-500" : "bg-blue-500"
+                      )} />
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-tighter">{task.priority} • {task.estimatedEffortHours}h</span>
+                    </div>
                   </div>
+                  
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground opacity-0 group-hover:opacity-100 fluent-transition">
+                        <MoreVertical size={14} />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="glass border-white/10">
+                      <DropdownMenuItem onClick={() => onEditTask?.(task)} className="text-xs">
+                        <Edit2 size={12} className="mr-2" /> Edit Task
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => onDeleteTask?.(task.id)} className="text-xs text-rose-500 focus:text-rose-500">
+                        <Trash2 size={12} className="mr-2" /> Delete Node
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
                 
                 {/* Visual Task Bar */}
@@ -98,12 +125,12 @@ export function GanttChart({ tasks }: GanttChartProps) {
                       getPriorityColor(task.priority)
                     )}
                   >
-                    {/* Progress Fill */}
                     <div 
                       className="absolute left-0 top-0 bottom-0 bg-white/20 transition-all duration-1000 ease-out" 
                       style={{ width: `${task.progress}%` }} 
                     />
-                    <span className="relative z-10 truncate drop-shadow-md">
+                    <span className="relative z-10 truncate flex items-center gap-2 drop-shadow-md">
+                      {task.progress === 100 && <CheckCircle2 size={12} />}
                       {task.progress}% <span className="opacity-70 font-normal ml-1">Complete</span>
                     </span>
                   </div>
