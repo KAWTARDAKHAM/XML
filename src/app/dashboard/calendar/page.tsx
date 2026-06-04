@@ -7,7 +7,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { format, parseISO, isWithinInterval, startOfDay, endOfDay, addMonths, subMonths } from 'date-fns';
 import { useState, useEffect } from 'react';
-import { MapPin, MessageSquare, ChevronLeft, ChevronRight, CheckCircle2, Circle, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Circle, Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -65,7 +65,7 @@ export default function CalendarPage() {
           <div className="w-full lg:w-[35%] bg-[#1A1F4D]/60 p-6 lg:p-8 flex flex-col border-r border-white/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-600/10 to-transparent pointer-events-none" />
             
-            <div className="relative z-10 flex justify-between items-start mb-6">
+            <div className="relative z-10 flex justify-between items-start mb-12">
               <div className="text-7xl font-headline font-bold text-white/90 tracking-tighter">
                 {selectedDate ? format(selectedDate, 'dd') : format(new Date(), 'dd')}
               </div>
@@ -77,23 +77,7 @@ export default function CalendarPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mb-6 relative z-10">
-              <div className="glass bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 group cursor-pointer hover:bg-white/10 transition-all border-white/5">
-                <MapPin className="text-blue-400 group-hover:scale-110 transition-transform" size={18} />
-                <span className="text-[8px] uppercase tracking-widest text-muted-foreground font-bold">Location</span>
-              </div>
-              <div className="glass bg-white/5 p-3 rounded-xl flex flex-col items-center justify-center gap-2 group cursor-pointer hover:bg-white/10 transition-all border-white/5">
-                <div className="relative">
-                  <MessageSquare className="text-pink-400 group-hover:scale-110 transition-transform" size={18} />
-                  {tasksOnSelectedDay.length > 0 && (
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-pink-500 rounded-full animate-pulse shadow-[0_0_8px_#ec008c]" />
-                  )}
-                </div>
-                <span className="text-[8px] uppercase tracking-widest text-muted-foreground font-bold">Activity</span>
-              </div>
-            </div>
-
-            <h3 className="text-[9px] uppercase tracking-[0.3em] text-white/40 font-bold mb-4 pl-1">Daily Nodes</h3>
+            <h3 className="text-[9px] uppercase tracking-[0.3em] text-white/40 font-bold mb-4 pl-1 relative z-10">Daily Nodes</h3>
 
             <ScrollArea className="flex-1 -mx-2 px-2 relative z-10">
               <div className="space-y-2">
