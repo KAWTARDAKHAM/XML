@@ -37,9 +37,11 @@ export default function XMLToolsPage() {
     const generatedXml = generateTaskXML(tasks);
     setXml(generatedXml);
     
+    // Calcul de l'intégrité globale
     const progress = Math.round(tasks.reduce((acc, t) => acc + t.progress, 0) / (tasks.length || 1));
     const effort = tasks.reduce((acc, t) => acc + (t.estimatedEffortHours || 0), 0);
 
+    // Génération du rapport avec les traductions
     const preview = `
       <div id="printable-report" style="color: ${language === 'fr' ? 'white' : 'white'}; padding: 40px; font-family: 'Inter', sans-serif; background: #09090B; min-height: 100%;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 24px;">
