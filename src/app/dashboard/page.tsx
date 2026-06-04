@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { DashboardNav } from '@/components/dashboard/dashboard-nav';
 import { useTasks } from '@/hooks/use-tasks';
 import { GanttChart } from '@/components/dashboard/gantt-chart';
-import { AIOptimizer } from '@/components/dashboard/ai-optimizer';
 import { TaskDialog } from '@/components/dashboard/task-dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -109,9 +108,7 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <AIOptimizer tasks={tasks} onApply={(suggestions) => console.log(suggestions)} />
-
-          <div className="h-[600px]">
+          <div className="h-[650px] mt-4">
             <GanttChart 
               tasks={tasks} 
               onEditTask={handleEdit}
