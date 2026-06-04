@@ -47,4 +47,8 @@ next-env.d.ts
 
 # firebase
 firebase-debug.log
+<<<<<<< HEAD
 firestore-debug.log
+=======
+firestore-debug.log
+>>>>>>> 00814f63d1995662d0adc373c1ccac9d6e882217
