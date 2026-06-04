@@ -40,6 +40,7 @@ export default function SettingsPage() {
       title: "Verification sent",
       description: `A magic link has been sent to ${user.email}.`,
     });
+    // Simulation d'une vérification réussie après un délai
     setTimeout(() => {
       setIsVerifying(false);
       updateUser({ isVerified: true });
