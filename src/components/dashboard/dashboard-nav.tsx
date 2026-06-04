@@ -15,20 +15,22 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-
-const NAV_ITEMS = [
-  { label: 'Home', href: '/dashboard', icon: Home },
-  { label: 'Analytics', href: '/dashboard/stats', icon: BarChart3 },
-  { label: 'Calendar', href: '/dashboard/calendar', icon: CalendarIcon },
-  { label: 'XML Tools', href: '/dashboard/xml-tools', icon: FileCode2 },
-  { label: 'Settings', href: '/dashboard/settings', icon: Settings },
-];
+import { useSettings } from '@/hooks/use-settings-context';
 
 export function DashboardNav() {
   const pathname = usePathname();
+  const { t } = useSettings();
+
+  const NAV_ITEMS = [
+    { label: t.nav.home, href: '/dashboard', icon: Home },
+    { label: t.nav.analytics, href: '/dashboard/stats', icon: BarChart3 },
+    { label: t.nav.calendar, href: '/dashboard/calendar', icon: CalendarIcon },
+    { label: t.nav.xmlTools, href: '/dashboard/xml-tools', icon: FileCode2 },
+    { label: t.nav.settings, href: '/dashboard/settings', icon: Settings },
+  ];
 
   return (
-    <aside className="h-screen bg-[#0C0C0E] border-r border-white/5 w-20 flex flex-col items-center py-8 z-50 fixed left-0 top-0">
+    <aside className="h-screen bg-card border-r border-white/5 w-20 flex flex-col items-center py-8 z-50 fixed left-0 top-0">
       <div className="mb-12">
         <div className="w-12 h-12 rounded-[1.25rem] bg-primary flex items-center justify-center text-white shadow-[0_0_20px_rgba(132,94,247,0.4)]">
            <Box size={24} />
@@ -49,7 +51,7 @@ export function DashboardNav() {
                     className={cn(
                       "w-12 h-12 flex items-center justify-center rounded-[1.25rem] transition-all duration-300",
                       isActive 
-                        ? "bg-white/10 text-primary shadow-inner" 
+                        ? "bg-primary/10 text-primary shadow-inner" 
                         : "text-muted-foreground hover:bg-white/5 hover:text-white"
                     )}
                   >
