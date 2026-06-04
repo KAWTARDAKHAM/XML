@@ -16,7 +16,9 @@ import {
   ChevronDown, 
   ChevronUp,
   FileText,
-  FileType
+  FileType,
+  Calendar,
+  Clock
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -36,33 +38,64 @@ export default function XMLToolsPage() {
     setXml(generatedXml);
     
     const preview = `
-      <div id="printable-report" style="color: white; padding: 40px; font-family: 'Inter', sans-serif; background: transparent;">
-        <h1 style="color: #845EF7; margin-bottom: 8px; font-size: 32px; font-weight: 800; letter-spacing: -0.02em;">PROJECT ARCHITECTURE REPORT</h1>
-        <p style="color: rgba(255,255,255,0.4); font-size: 12px; text-transform: uppercase; letter-spacing: 0.3em; margin-bottom: 40px;">System Status: Synchronized • Version 4.2</p>
+      <div id="printable-report" style="color: white; padding: 40px; font-family: 'Inter', sans-serif; background: #09090B; min-height: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 24px;">
+          <div>
+            <h1 style="color: #845EF7; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.02em;">PROJECT ARCHITECTURE REPORT</h1>
+            <p style="color: rgba(255,255,255,0.4); font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; margin-top: 8px;">System Status: Synchronized • Version 4.2</p>
+          </div>
+          <div style="text-align: right;">
+            <p style="color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; margin: 0;">Generation Date</p>
+            <p style="font-weight: 700; font-size: 14px; margin: 4px 0 0 0;">${new Date().toLocaleDateString()}</p>
+          </div>
+        </div>
         
         <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 32px; backdrop-filter: blur(10px);">
           <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
             <thead>
               <tr style="text-align: left;">
                 <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Node Identity</th>
+                <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Timeline</th>
                 <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Priority</th>
+                <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Effort</th>
                 <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Integrity</th>
               </tr>
             </thead>
             <tbody>
               ${tasks.map(t => `
                 <tr style="background: rgba(255,255,255,0.02);">
-                  <td style="padding: 20px 16px; font-weight: 600; font-size: 14px; border-radius: 12px 0 0 12px; border-left: 2px solid ${t.priority === 'Critical' ? '#F43F5E' : '#845EF7'};">${t.name}</td>
-                  <td style="padding: 20px 16px; font-size: 13px;"><span style="color: ${t.priority === 'Critical' ? '#F43F5E' : '#845EF7'}; font-weight: 700;">${t.priority}</span></td>
-                  <td style="padding: 20px 16px; font-size: 13px; font-weight: 700; border-radius: 0 12px 12px 0;">${t.progress}%</td>
+                  <td style="padding: 20px 16px; border-radius: 12px 0 0 12px; border-left: 2px solid ${t.priority === 'Critical' ? '#F43F5E' : '#845EF7'};">
+                    <div style="font-weight: 600; font-size: 14px;">${t.name}</div>
+                    <div style="font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 4px;">${t.status}</div>
+                  </td>
+                  <td style="padding: 20px 16px; font-size: 12px; color: rgba(255,255,255,0.6);">
+                    ${t.startDate} → ${t.endDate}
+                  </td>
+                  <td style="padding: 20px 16px; font-size: 12px;">
+                    <span style="color: ${t.priority === 'Critical' ? '#F43F5E' : '#845EF7'}; font-weight: 700;">${t.priority}</span>
+                  </td>
+                  <td style="padding: 20px 16px; font-size: 12px;">
+                    ${t.estimatedEffortHours}h
+                  </td>
+                  <td style="padding: 20px 16px; font-size: 14px; font-weight: 700; border-radius: 0 12px 12px 0; color: #845EF7;">
+                    ${t.progress}%
+                  </td>
                 </tr>
               `).join('')}
             </tbody>
           </table>
         </div>
+
+        <div style="margin-top: 40px; background: rgba(132, 94, 247, 0.05); border-radius: 20px; padding: 24px; border: 1px solid rgba(132, 94, 247, 0.1);">
+          <h4 style="margin: 0 0 8px 0; font-size: 12px; color: #845EF7; text-transform: uppercase; letter-spacing: 0.1em;">Architecture Summary</h4>
+          <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6;">
+            This report summarizes ${tasks.length} active nodes. Total project scope estimated at ${tasks.reduce((acc, t) => acc + (t.estimatedEffortHours || 0), 0)} hours of effort. 
+            The system is operating at an overall integrity level of ${Math.round(tasks.reduce((acc, t) => acc + t.progress, 0) / (tasks.length || 1))}% based on the current synchronization.
+          </p>
+        </div>
         
-        <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); pt: 24px;">
-          <p style="font-size: 10px; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.1em;">Generated by FluentGantt Engine • ${new Date().toLocaleString()}</p>
+        <div style="margin-top: 60px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px;">
+          <p style="font-size: 10px; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.1em;">Generated by FluentGantt Engine • Digital Project Node Certification</p>
           <div style="width: 40px; height: 2px; background: #845EF7; border-radius: 2px;"></div>
         </div>
       </div>
@@ -83,16 +116,28 @@ export default function XMLToolsPage() {
 
     if (exportFormat === 'pdf') {
       toast({ title: "PDF Generation", description: "Select 'Save as PDF' in the print dialog as a prototype fallback." });
-      // Prototype fallback to browser print for PDF
       const printWindow = window.open('', '_blank');
       if (printWindow) {
         printWindow.document.write(`
           <html>
-            <head><title>Project Report</title></head>
-            <body style="background: #000;">${htmlPreview}<script>window.onload=()=>{window.print();window.close();}</script></body>
+            <head>
+              <title>Project Report</title>
+              <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+              <style>
+                body { margin: 0; background: #09090B; }
+                @media print {
+                  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                }
+              </style>
+            </head>
+            <body>${htmlPreview}</body>
           </html>
         `);
         printWindow.document.close();
+        setTimeout(() => {
+          printWindow.print();
+          printWindow.close();
+        }, 500);
       }
     } else {
       const blob = new Blob([htmlPreview], { type: 'text/html' });
