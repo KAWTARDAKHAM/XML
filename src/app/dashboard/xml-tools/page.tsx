@@ -7,18 +7,17 @@ import { useTasks } from '@/hooks/use-tasks';
 import { generateTaskXML, defaultXSLT, defaultXSD } from '@/lib/xml-logic';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  Play, 
   FileCode2, 
   Download, 
   CheckCircle2, 
-  ShieldCheck, 
   Terminal, 
   Printer, 
-  Copy, 
   ChevronDown, 
   ChevronUp,
-  FileText
+  FileText,
+  FileType
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -31,44 +30,112 @@ export default function XMLToolsPage() {
   const [htmlPreview, setHtmlPreview] = useState<string>('');
   const [activeView, setActiveView] = useState<'xml' | 'xsd'>('xml');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [exportFormat, setExportFormat] = useState<'html' | 'pdf'>('html');
 
-  const handleTransform = () => {
-    setXml(generateTaskXML(tasks)); // Refresh XML with latest data
-    toast({
-      title: "Report Generated",
-      description: "Neural HTML transformation complete.",
-    });
+  const handleGenerate = () => {
+    const generatedXml = generateTaskXML(tasks);
+    setXml(generatedXml);
     
-    setHtmlPreview(`
-      <div style="color: white; padding: 24px; font-family: 'Space Grotesk', sans-serif;">
-        <h2 style="color: #00A3FF; margin-bottom: 20px; font-size: 24px; font-weight: bold;">Project Architecture Report</h2>
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 20px;">
-          <table style="width: 100%; border-collapse: collapse;">
+    const preview = `
+      <div id="printable-report" style="color: white; padding: 40px; font-family: 'Inter', sans-serif; background: transparent;">
+        <h1 style="color: #845EF7; margin-bottom: 8px; font-size: 32px; font-weight: 800; letter-spacing: -0.02em;">PROJECT ARCHITECTURE REPORT</h1>
+        <p style="color: rgba(255,255,255,0.4); font-size: 12px; text-transform: uppercase; letter-spacing: 0.3em; margin-bottom: 40px;">System Status: Synchronized • Version 4.2</p>
+        
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 32px; backdrop-filter: blur(10px);">
+          <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
             <thead>
-              <tr style="text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;">Node Name</th>
-                <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;">Priority</th>
-                <th style="padding: 12px; color: rgba(255,255,255,0.5); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em;">Integrity</th>
+              <tr style="text-align: left;">
+                <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Node Identity</th>
+                <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Priority</th>
+                <th style="padding: 0 16px 8px 16px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 700;">Integrity</th>
               </tr>
             </thead>
             <tbody>
               ${tasks.map(t => `
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                  <td style="padding: 12px; font-weight: 600;">${t.name}</td>
-                  <td style="padding: 12px;"><span style="color: ${t.priority === 'Critical' ? '#F43F5E' : '#00A3FF'}">${t.priority}</span></td>
-                  <td style="padding: 12px;">${t.progress}%</td>
+                <tr style="background: rgba(255,255,255,0.02);">
+                  <td style="padding: 20px 16px; font-weight: 600; font-size: 14px; border-radius: 12px 0 0 12px; border-left: 2px solid ${t.priority === 'Critical' ? '#F43F5E' : '#845EF7'};">${t.name}</td>
+                  <td style="padding: 20px 16px; font-size: 13px;"><span style="color: ${t.priority === 'Critical' ? '#F43F5E' : '#845EF7'}; font-weight: 700;">${t.priority}</span></td>
+                  <td style="padding: 20px 16px; font-size: 13px; font-weight: 700; border-radius: 0 12px 12px 0;">${t.progress}%</td>
                 </tr>
               `).join('')}
             </tbody>
           </table>
         </div>
-        <p style="margin-top: 20px; font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em;">Generated by FluentGantt Engine v4.2 • ${new Date().toLocaleDateString()}</p>
+        
+        <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); pt: 24px;">
+          <p style="font-size: 10px; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.1em;">Generated by FluentGantt Engine • ${new Date().toLocaleString()}</p>
+          <div style="width: 40px; height: 2px; background: #845EF7; border-radius: 2px;"></div>
+        </div>
       </div>
-    `);
+    `;
+    setHtmlPreview(preview);
+    
+    toast({
+      title: "Architecture Sync Complete",
+      description: "Neural report data has been visualized.",
+    });
   };
 
-  const copyToClipboard = () => {
-    toast({ title: "Copied", description: "Report HTML copied to clipboard." });
+  const handlePrint = () => {
+    if (!htmlPreview) return;
+    
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Project Report - FluentGantt</title>
+            <style>
+              @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+              body { margin: 0; padding: 20px; font-family: 'Inter', sans-serif; background: #000; }
+              #printable-report { max-width: 800px; margin: 0 auto; }
+              @media print {
+                body { background: white !important; }
+                #printable-report { color: black !important; }
+                #printable-report tr { background: #f8f9fa !important; border-bottom: 1px solid #eee !important; }
+                #printable-report h1 { color: #845EF7 !important; }
+                * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+              }
+            </style>
+          </head>
+          <body>
+            ${htmlPreview}
+            <script>
+              window.onload = () => {
+                window.print();
+                window.onafterprint = () => window.close();
+              }
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
+  };
+
+  const handleExport = () => {
+    if (!htmlPreview) {
+      toast({ variant: "destructive", title: "Missing Data", description: "Generate a report before exporting." });
+      return;
+    }
+
+    if (exportFormat === 'pdf') {
+      // Pour un prototype, l'export PDF passe par le dialogue d'impression (Save as PDF)
+      toast({ title: "Redirecting to Print", description: "Select 'Save as PDF' in the print destination." });
+      handlePrint();
+    } else {
+      const blob = new Blob([htmlPreview], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `fluentgantt-report-${new Date().getTime()}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast({ title: "Download Initiated", description: "HTML architecture document exported successfully." });
+    }
   };
 
   return (
@@ -81,18 +148,31 @@ export default function XMLToolsPage() {
               <h1 className="text-4xl font-headline font-bold text-white tracking-tight">Report Center</h1>
               <p className="text-muted-foreground mt-2">Generate professional project documentation from your neural data</p>
             </div>
-            <div className="flex gap-4">
+            
+            <div className="flex items-center gap-3 bg-white/5 p-2 rounded-2xl border border-white/10">
+              <div className="flex items-center gap-2 px-3 text-muted-foreground">
+                <FileType size={16} />
+                <span className="text-[10px] uppercase font-bold tracking-widest">Format</span>
+              </div>
+              <Select value={exportFormat} onValueChange={(v: any) => setExportFormat(v)}>
+                <SelectTrigger className="w-[100px] bg-black/40 border-white/5 text-[10px] font-bold uppercase tracking-widest h-10 rounded-xl">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="glass border-white/10">
+                  <SelectItem value="html" className="text-[10px] font-bold uppercase">HTML</SelectItem>
+                  <SelectItem value="pdf" className="text-[10px] font-bold uppercase">PDF</SelectItem>
+                </SelectContent>
+              </Select>
               <Button 
-                onClick={handleTransform}
-                className="bg-primary hover:bg-primary/80 text-white font-bold rounded-xl shadow-lg shadow-primary/20 px-8 h-12"
+                onClick={handleGenerate}
+                className="bg-primary hover:bg-primary/80 text-white font-bold rounded-xl shadow-lg shadow-primary/20 px-8 h-10 text-[10px] uppercase tracking-widest"
               >
-                <FileText size={18} className="mr-2" /> Generate Report
+                <FileText size={16} className="mr-2" /> Generate
               </Button>
             </div>
           </header>
 
           <div className="grid grid-cols-1 gap-8">
-            {/* Main Preview Area */}
             <div className="glass p-8 rounded-[2.5rem] min-h-[500px] flex flex-col relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none" />
               
@@ -102,17 +182,25 @@ export default function XMLToolsPage() {
                     <CheckCircle2 size={24} />
                   </div>
                   <div>
-                    <h3 className="font-headline font-semibold text-white text-xl">Document Preview</h3>
-                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Neural HTML Rendering</p>
+                    <h3 className="font-headline font-semibold text-white text-xl">Architecture Preview</h3>
+                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Neural Rendering Engine</p>
                   </div>
                 </div>
                 
                 {htmlPreview && (
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="sm" onClick={copyToClipboard} className="text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-white/10 rounded-xl">
-                      <Copy size={14} className="mr-2" /> Copy
+                    <Button 
+                      variant="ghost" 
+                      onClick={handleExport}
+                      className="text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-white/10 rounded-xl h-10 px-6"
+                    >
+                      <Download size={14} className="mr-2" /> Download {exportFormat}
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-white/10 rounded-xl">
+                    <Button 
+                      variant="ghost" 
+                      onClick={handlePrint}
+                      className="text-[10px] uppercase font-bold tracking-widest border border-white/5 bg-white/5 hover:bg-white/10 rounded-xl h-10 px-6"
+                    >
                       <Printer size={14} className="mr-2" /> Print
                     </Button>
                   </div>
@@ -130,7 +218,7 @@ export default function XMLToolsPage() {
                     <div className="space-y-2">
                       <p className="text-sm font-medium text-white/40">No report generated yet</p>
                       <p className="text-[10px] uppercase tracking-widest text-white/20 max-w-[280px]">
-                        Click "Generate Report" to visualize your current project nodes in a professional format
+                        Configure your format and click "Generate" to synchronize the architecture
                       </p>
                     </div>
                   </div>
@@ -138,12 +226,11 @@ export default function XMLToolsPage() {
               </div>
             </div>
 
-            {/* Advanced Section */}
             <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced} className="glass p-6 rounded-[2rem] border-white/5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Terminal size={18} className="text-primary" />
-                  <span className="text-sm font-bold uppercase tracking-widest text-white/60">Advanced Developer Tools</span>
+                  <span className="text-sm font-bold uppercase tracking-widest text-white/60">Advanced Neural Tools</span>
                 </div>
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="rounded-full h-8 w-8 p-0">
@@ -156,7 +243,7 @@ export default function XMLToolsPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between px-2">
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Source Data (XML/XSD)</h4>
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Source Architecture (XML)</h4>
                       <div className="flex bg-white/5 p-1 rounded-lg border border-white/5">
                         <button 
                           onClick={() => setActiveView('xml')}
@@ -178,7 +265,7 @@ export default function XMLToolsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between px-2">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Transformation Engine (XSLT)</h4>
-                      <Button variant="ghost" size="sm" className="h-6 text-[9px] uppercase font-black bg-white/5">Reset to Default</Button>
+                      <Button variant="ghost" size="sm" className="h-6 text-[9px] uppercase font-black bg-white/5">Reset Default</Button>
                     </div>
                     <Textarea 
                       value={xslt} 
@@ -186,14 +273,6 @@ export default function XMLToolsPage() {
                       className="bg-black/60 border-white/5 font-mono text-[10px] h-[250px] leading-relaxed text-primary/60 rounded-2xl"
                     />
                   </div>
-                </div>
-                <div className="flex justify-end gap-3">
-                  <Button variant="outline" size="sm" className="rounded-xl border-white/10 text-xs">
-                    <Download size={14} className="mr-2" /> Download XML
-                  </Button>
-                  <Button variant="outline" size="sm" className="rounded-xl border-white/10 text-xs">
-                    <ShieldCheck size={14} className="mr-2" /> Validate Schema
-                  </Button>
                 </div>
               </CollapsibleContent>
             </Collapsible>
@@ -203,3 +282,4 @@ export default function XMLToolsPage() {
     </div>
   );
 }
+
