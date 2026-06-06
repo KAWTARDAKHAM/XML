@@ -3,8 +3,10 @@ env/
 *.pyc
 .DS_Store
 *.log
+# Generated database and output XML
+Data/tasks.db
+Data/tasks.xml
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -34,21 +36,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-
 # vercel
 .vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
 .genkit/*
 .env*
-
 # firebase
 firebase-debug.log
-<<<<<<< HEAD
-firestore-debug.log
-=======
-firestore-debug.log
->>>>>>> 00814f63d1995662d0adc373c1ccac9d6e882217
+
