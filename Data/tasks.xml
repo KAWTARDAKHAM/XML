@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<tasks xmlns="http://ensias.ma/tasks" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ensias.ma/tasks Data/tasks.xsd" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <task id="t1" type="simple">
+    <titre>Terminer Etape 1 XML</titre>
+    <date_debut>2026-06-02</date_debut>
+    <date_fin>2026-06-03</date_fin>
+    <priorite>haute</priorite>
+    <statut>en cours</statut>
+  </task>
+  <task id="t2" type="simple">
+    <titre>Rediger Rpport TP Python</titre>
+    <date_debut>2026-06-03</date_debut>
+    <date_fin>2026-06-04</date_fin>
+    <priorite>basse</priorite>
+    <statut>en cours</statut>
+  </task>
+  <task id="t3" type="complexe">
+    <titre>Préparer le projet XML</titre>
+    <date_debut>2026-06-01</date_debut>
+    <date_fin>2026-06-07</date_fin>
+    <priorite>haute</priorite>
+    <statut>en cours</statut>
+    <sous_taches>
+      <sous_tache id="t31">
+        <titre>Créer le fichier XSD</titre>
+        <date_debut>2026-06-03</date_debut>
+        <date_fin>2026-06-04</date_fin>
+        <priorite>haute</priorite>
+        <statut>terminé</statut>
+      </sous_tache>
+      <sous_tache id="t32">
+        <titre>Écrire le fichier XML</titre>
+        <date_debut>2026-06-04</date_debut>
+        <date_fin>2026-06-05</date_fin>
+        <priorite>haute</priorite>
+        <statut>terminé</statut>
+      </sous_tache>
+      <sous_tache id="t33">
+        <titre>Coder app.py</titre>
+        <date_debut>2026-06-05</date_debut>
+        <date_fin>2026-06-06</date_fin>
+        <priorite>haute</priorite>
+        <statut>en cours</statut>
+      </sous_tache>
+    </sous_taches>
+  </task>
+  <task id="t4" type="complexe">
+    <titre>Préparer la soutenance</titre>
+    <date_debut>2026-06-10</date_debut>
+    <date_fin>2026-06-20</date_fin>
+    <priorite>moyenne</priorite>
+    <statut>en cours</statut>
+    <sous_taches>
+      <sous_tache id="t41">
+        <titre>Préparer les slides</titre>
+        <date_debut>2026-06-10</date_debut>
+        <date_fin>2026-06-15</date_fin>
+        <priorite>moyenne</priorite>
+        <statut>en cours</statut>
+      </sous_tache>
+      <sous_tache id="t42">
+        <titre>Rédiger le rapport</titre>
+        <date_debut>2026-06-15</date_debut>
+        <date_fin>2026-06-20</date_fin>
+        <priorite>basse</priorite>
+        <statut>en cours</statut>
+      </sous_tache>
+    </sous_taches>
+  </task>
+</tasks>
