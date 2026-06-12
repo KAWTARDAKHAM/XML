@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tasks [
+  <!ELEMENT tasks (task*)>
+  <!ELEMENT task (titre, date_debut, date_fin, priorite, statut, sous_taches?)>
+  <!ATTLIST task id ID #REQUIRED>
+  <!ATTLIST task type (simple|complexe) #REQUIRED>
+  
+  <!ELEMENT titre (#PCDDATA)>
+  <!ELEMENT date_debut (#PCDDATA)>
+  <!ELEMENT date_fin (#PCDDATA)>
+  <!ELEMENT priorite (#PCDDATA)>
+  <!ELEMENT statut (#PCDDATA)>
+  
+  <!ELEMENT sous_taches (sous_tache+)>
+  <!ELEMENT sous_tache (titre, date_debut, date_fin, priorite, statut)>
+  <!ATTLIST sous_tache id ID #REQUIRED>
+]>

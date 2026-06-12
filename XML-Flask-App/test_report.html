@@ -1,0 +1,170 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Rapport des Tâches</title>
+<style>
+          body {
+            font-family: 'Inter', sans-serif;
+            padding: 40px;
+            background: #0F0D15;
+            color: #fff;
+          }
+          h1 {
+            color: #845EF7;
+            font-size: 28px;
+            margin-bottom: 8px;
+          }
+          .subtitle {
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 32px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th {
+            background: #845EF7;
+            color: #fff;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+          }
+          td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+          }
+          tr:hover td {
+            background: rgba(255,255,255,0.02);
+          }
+          .task-id {
+            color: #845EF7;
+            font-weight: 700;
+            font-family: monospace;
+          }
+          .priority-haute { color: #F43F5E; font-weight: 700; }
+          .priority-moyenne { color: #A78BFA; font-weight: 700; }
+          .priority-basse { color: #60A5FA; font-weight: 700; }
+          .status-en-cours { color: #FBBF24; }
+          .status-termine { color: #34D399; }
+          .type-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+          .type-simple { background: rgba(96,165,250,0.15); color: #60A5FA; }
+          .type-complexe { background: rgba(132,94,247,0.15); color: #A78BFA; }
+          .subtasks {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            border-left: 3px solid #845EF7;
+          }
+          .subtask-item {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin: 4px 0;
+          }
+          .no-subtasks {
+            color: rgba(255,255,255,0.2);
+            font-style: italic;
+            font-size: 13px;
+          }
+        </style>
+</head>
+<body>
+<h1>Rapport des Tâches</h1>
+<p class="subtitle">Généré depuis la base de données • 4 tâche(s)</p>
+<table>
+<thead><tr>
+<th>ID</th>
+<th>Titre</th>
+<th>Type</th>
+<th>Date Début</th>
+<th>Date Fin</th>
+<th>Priorité</th>
+<th>Statut</th>
+<th>Sous-tâches</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><span class="task-id">#t1</span></td>
+<td>Terminer Etape 1 XML</td>
+<td><span class="type-badge type-simple">simple</span></td>
+<td>2026-06-02</td>
+<td>2026-06-03</td>
+<td><span class="priority-haute">haute</span></td>
+<td><span class="status-en cours">en cours</span></td>
+<td><span class="no-subtasks">—</span></td>
+</tr>
+<tr>
+<td><span class="task-id">#t2</span></td>
+<td>Rediger Rpport TP Python</td>
+<td><span class="type-badge type-simple">simple</span></td>
+<td>2026-06-03</td>
+<td>2026-06-04</td>
+<td><span class="priority-basse">basse</span></td>
+<td><span class="status-en cours">en cours</span></td>
+<td><span class="no-subtasks">—</span></td>
+</tr>
+<tr>
+<td><span class="task-id">#t3</span></td>
+<td>Préparer le projet XML</td>
+<td><span class="type-badge type-complexe">complexe</span></td>
+<td>2026-06-01</td>
+<td>2026-06-07</td>
+<td><span class="priority-haute">haute</span></td>
+<td><span class="status-en cours">en cours</span></td>
+<td><div class="subtasks">
+<div class="subtask-item">
+                            • Créer le fichier XSD (t31)
+                            – terminé</div>
+<div class="subtask-item">
+                            • Écrire le fichier XML (t32)
+                            – terminé</div>
+<div class="subtask-item">
+                            • Coder app.py (t33)
+                            – en cours</div>
+</div></td>
+</tr>
+<tr>
+<td><span class="task-id">#t4</span></td>
+<td>Préparer la soutenance</td>
+<td><span class="type-badge type-complexe">complexe</span></td>
+<td>2026-06-10</td>
+<td>2026-06-20</td>
+<td><span class="priority-moyenne">moyenne</span></td>
+<td><span class="status-en cours">en cours</span></td>
+<td><div class="subtasks">
+<div class="subtask-item">
+                            • Préparer les slides (t41)
+                            – en cours</div>
+<div class="subtask-item">
+                            • Rédiger le rapport (t42)
+                            – en cours</div>
+</div></td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top: 40px; padding: 24px; background: rgba(132,94,247,0.05); border-radius: 20px; border: 1px solid rgba(132,94,247,0.1);">
+<h4 style="margin: 0 0 8px 0; font-size: 12px; color: #845EF7; text-transform: uppercase; letter-spacing: 0.1em;">Résumé</h4>
+<p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6;">4 tâche(s) au total,
+            0 terminée(s),
+            4 en cours.
+          </p>
+</div>
+</body>
+</html>
