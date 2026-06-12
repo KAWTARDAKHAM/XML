@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:tasks xmlns:ns0="http://ensias.ma/tasks" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ensias.ma/tasks ../Data/tasks.xsd">
+
+
+  <ns0:task id="t1" type="simple">
+    <ns0:titre>Terminer Etape 1 XML</ns0:titre>
+    <ns0:date_debut>2026-06-02</ns0:date_debut>
+    <ns0:date_fin>2026-06-03</ns0:date_fin>
+    <ns0:priorite>haute</ns0:priorite>
+    <ns0:statut>en cours</ns0:statut>
+  </ns0:task>
+
+   <ns0:task id="t2" type="simple">
+    <ns0:titre>Rediger Rpport TP Python</ns0:titre>
+    <ns0:date_debut>2026-06-03</ns0:date_debut>
+    <ns0:date_fin>2026-06-04</ns0:date_fin>
+    <ns0:priorite>basse</ns0:priorite>
+    <ns0:statut>en cours</ns0:statut>
+  </ns0:task>
+
+  <ns0:task id="t3" type="complexe">
+    <ns0:titre>Préparer le projet XML</ns0:titre>
+    <ns0:date_debut>2026-06-01</ns0:date_debut>
+    <ns0:date_fin>2026-06-07</ns0:date_fin>
+    <ns0:priorite>haute</ns0:priorite>
+    <ns0:statut>en cours</ns0:statut>
+    <ns0:sous_taches>
+      <ns0:sous_tache id="t31">
+        <ns0:titre>Créer le fichier XSD</ns0:titre>
+        <ns0:date_debut>2026-06-03</ns0:date_debut>
+        <ns0:date_fin>2026-06-04</ns0:date_fin>
+        <ns0:priorite>haute</ns0:priorite>
+        <ns0:statut>terminé</ns0:statut>
+      </ns0:sous_tache>
+      <ns0:sous_tache id="t32">
+        <ns0:titre>Écrire le fichier XML</ns0:titre>
+        <ns0:date_debut>2026-06-04</ns0:date_debut>
+        <ns0:date_fin>2026-06-05</ns0:date_fin>
+        <ns0:priorite>haute</ns0:priorite>
+        <ns0:statut>terminé</ns0:statut>
+      </ns0:sous_tache>
+      <ns0:sous_tache id="t33">
+        <ns0:titre>Coder app.py</ns0:titre>
+        <ns0:date_debut>2026-06-05</ns0:date_debut>
+        <ns0:date_fin>2026-06-06</ns0:date_fin>
+        <ns0:priorite>haute</ns0:priorite>
+        <ns0:statut>en cours</ns0:statut>
+      </ns0:sous_tache>
+    </ns0:sous_taches>
+  </ns0:task>
+
+  <ns0:task id="t4" type="complexe">
+    <ns0:titre>Préparer la soutenance</ns0:titre>
+    <ns0:date_debut>2026-06-10</ns0:date_debut>
+    <ns0:date_fin>2026-06-20</ns0:date_fin>
+    <ns0:priorite>moyenne</ns0:priorite>
+    <ns0:statut>en cours</ns0:statut>
+    <ns0:sous_taches>
+      <ns0:sous_tache id="t41">
+        <ns0:titre>Préparer les slides</ns0:titre>
+        <ns0:date_debut>2026-06-10</ns0:date_debut>
+        <ns0:date_fin>2026-06-15</ns0:date_fin>
+        <ns0:priorite>moyenne</ns0:priorite>
+        <ns0:statut>en cours</ns0:statut>
+      </ns0:sous_tache>
+      <ns0:sous_tache id="t42">
+        <ns0:titre>Rédiger le rapport</ns0:titre>
+        <ns0:date_debut>2026-06-15</ns0:date_debut>
+        <ns0:date_fin>2026-06-20</ns0:date_fin>
+        <ns0:priorite>basse</ns0:priorite>
+        <ns0:statut>en cours</ns0:statut>
+      </ns0:sous_tache>
+    </ns0:sous_taches>
+  </ns0:task>
+
+</ns0:tasks>
